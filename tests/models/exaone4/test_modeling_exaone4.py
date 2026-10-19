@@ -142,6 +142,7 @@ class Exaone4IntegrationTest(MemoryCleanupMixin, unittest.TestCase):
         model = Exaone4ForCausalLM.from_pretrained(
             self.TEST_MODEL_ID, device_map="auto", dtype=torch.bfloat16, attn_implementation="sdpa"
         )
+        torch.cuda.empty_cache()
         input_ids = tokenizer.encode(prompt, return_tensors="pt").to(model.model.embed_tokens.weight.device)
 
         generated_ids = model.generate(input_ids, max_new_tokens=20, temperature=0)
